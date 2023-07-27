@@ -1,3 +1,3 @@
 ## 1.0.0
 
-Earliest version of Custom Image Editor
+Earliest version of custom_image_editor
