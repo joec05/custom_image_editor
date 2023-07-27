@@ -110,7 +110,11 @@ class _MyHomePageState extends State<MyHomePage> {
                             shape: BoxShape.circle,
                           ),
                           child: GestureDetector(
-                            onTap: () => imageLink.value = '',
+                            onTap: (){
+                              imageLink.value = '';
+                              width.value = 200;
+                              height.value = 350;
+                            },
                             child: Icon(Icons.delete, size: 25, color: Colors.white)
                           )
                         )
