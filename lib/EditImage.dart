@@ -490,8 +490,8 @@ class ImageEditorState extends State<EditImageComponentState> {
                 EditType selectedEditType = editImageProvider.state.selectedEditType;
                 if(selectedEditType == EditType.crop && prevAngle != degrees){
                   WidgetsBinding.instance.addPostFrameCallback((_) {
-                    draggedWidth.value = degrees == 0 || degrees == 180 ? currentWidth : currentHeight;
-                    draggedHeight.value = degrees == 0 || degrees == 180 ? currentHeight : currentWidth;
+                    draggedWidth.value = degrees == 0 || degrees == 180 ? editImageProvider.state.width : editImageProvider.state.height;
+                    draggedHeight.value = degrees == 0 || degrees == 180 ? editImageProvider.state.height : editImageProvider.state.width;
                     prevAngle = degrees;
                   });
                 }else if(selectedEditType != EditType.crop){
