@@ -1,6 +1,4 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 enum EditType{
   none,
