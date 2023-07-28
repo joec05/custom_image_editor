@@ -555,7 +555,7 @@ class ImageEditorState extends State<EditImageComponentState> {
                           return selectedEditType == EditType.addText && text.isNotEmpty ?
                             Row(
                               children: [
-                                IconButton(
+                               IconButton(
                                   icon: const Icon(Icons.close),
                                   onPressed: (){
                                     currentText.value = '';
@@ -743,6 +743,7 @@ class ImageEditorState extends State<EditImageComponentState> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Container(
+                                      padding: EdgeInsets.all(getScreenWidth() * 0.0125),
                                       color: selectedEditType == EditType.crop ? Colors.grey : Colors.transparent,
                                       margin: EdgeInsets.symmetric(horizontal: 0.015* getScreenWidth(), vertical: 0.015 * getScreenHeight()),
                                       child: InkWell(
@@ -758,6 +759,7 @@ class ImageEditorState extends State<EditImageComponentState> {
                                       ),
                                     ),
                                     Container(
+                                      padding: EdgeInsets.all(getScreenWidth() * 0.0125),
                                       color: selectedEditType == EditType.rotate ? Colors.grey : Colors.transparent,
                                       margin: EdgeInsets.symmetric(horizontal: 0.015* getScreenWidth()),
                                       child: InkWell(
@@ -780,6 +782,7 @@ class ImageEditorState extends State<EditImageComponentState> {
                                       ),
                                     ),
                                     Container(
+                                      padding: EdgeInsets.all(getScreenWidth() * 0.0125),
                                       color: selectedEditType == EditType.paint ? Colors.grey : Colors.transparent,
                                       margin: EdgeInsets.symmetric(horizontal: 0.015* getScreenWidth()),
                                       child: InkWell(
@@ -795,6 +798,7 @@ class ImageEditorState extends State<EditImageComponentState> {
                                       ),
                                     ),
                                     Container(
+                                      padding: EdgeInsets.all(getScreenWidth() * 0.0125),
                                       color: selectedEditType == EditType.addText ? Colors.grey : Colors.transparent,
                                       margin: EdgeInsets.symmetric(horizontal: 0.015* getScreenWidth()),
                                       child: InkWell(
