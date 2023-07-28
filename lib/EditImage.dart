@@ -539,7 +539,7 @@ class ImageEditorState extends State<EditImageComponentState> {
                               draggedTop.value = 0;
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
+                              backgroundColor: Colors.red,
                               shape: RoundedRectangleBorder(
                                 side: BorderSide.none,
                                 borderRadius: BorderRadius.circular(0),
