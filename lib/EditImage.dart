@@ -295,7 +295,7 @@ class ImageEditorState extends State<EditImageComponentState> {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: const Text('Edit Text'),
+              title: const Text('Add Text'),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
