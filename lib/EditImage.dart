@@ -55,7 +55,7 @@ class ImageEditorState extends State<EditImageComponentState> {
   ValueNotifier<String> currentText = ValueNotifier('');
   ValueNotifier<bool> boldCurrentText = ValueNotifier(false);
   ValueNotifier<Offset> currentTextOffset = ValueNotifier(const Offset(0, 0));
-  double appBarHeight = 80;
+  double appBarHeight = 0.11 * getScreenHeight();
   ValueNotifier<double> iconsListHeight = ValueNotifier(0.1 * getScreenHeight());
   List availableColors = [
     Colors.black, Colors.red, Colors.blue, Colors.green, Colors.yellow, Colors.purple,
