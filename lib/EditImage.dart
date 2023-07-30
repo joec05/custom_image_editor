@@ -55,7 +55,7 @@ class ImageEditorState extends State<EditImageComponentState> {
   ValueNotifier<String> currentText = ValueNotifier('');
   ValueNotifier<bool> boldCurrentText = ValueNotifier(false);
   ValueNotifier<Offset> currentTextOffset = ValueNotifier(const Offset(0, 0));
-  double appBarHeight = 0.11 * getScreenHeight();
+  late double appBarHeight;
   ValueNotifier<double> iconsListHeight = ValueNotifier(0.1 * getScreenHeight());
   List availableColors = [
     Colors.black, Colors.red, Colors.blue, Colors.green, Colors.yellow, Colors.purple,
@@ -65,6 +65,7 @@ class ImageEditorState extends State<EditImageComponentState> {
   @override
   void initState(){
     super.initState();
+    appBarHeight = 0;
     addTextController.addListener(() {
       inputsNotEmpty.value = addTextController.text.isNotEmpty;
     });
@@ -462,6 +463,7 @@ class ImageEditorState extends State<EditImageComponentState> {
 
   @override
   Widget build(BuildContext context) {
+    appBarHeight = MediaQuery.of(context).padding.top + kToolbarHeight;
     return FutureBuilder<ImageInfo>(
       future: loadImageInfoFromFile(widget.imageFile),
       builder: (BuildContext context, AsyncSnapshot<ImageInfo>snapshot) {
