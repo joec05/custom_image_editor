@@ -22,6 +22,7 @@ class EditImageProviderState extends ChangeNotifier {
   Color selectedPaintColor;
   Color selectedAddTextColor;
   bool updatePaintState;
+  bool resetCroppingRectanglePosition;
 
   EditImageProviderState({
     required this.rotationAngle,
@@ -36,7 +37,8 @@ class EditImageProviderState extends ChangeNotifier {
     required this.drawingsList,
     required this.selectedPaintColor,
     required this.selectedAddTextColor,
-    required this.updatePaintState
+    required this.updatePaintState,
+    required this.resetCroppingRectanglePosition
   });
 }
 
@@ -51,7 +53,7 @@ class EditImageProvider with ChangeNotifier {
       rotationAngle: 0.0, width: 0.0, height: 0.0, top: 0.0, 
       left: 0.0, points: [], toCrop: {}, selectedEditType: EditType.none, 
       totalImageSize: Size(0, 0), drawingsList: [], selectedAddTextColor: Colors.black, selectedPaintColor: Colors.black,
-      updatePaintState: false
+      updatePaintState: false, resetCroppingRectanglePosition: false
     );
   }
 
@@ -134,6 +136,10 @@ class EditImageProvider with ChangeNotifier {
   void togglePaintState(bool newValue){
     _state.updatePaintState = newValue;
     notifyListeners();
+  }
+
+  void toggleCroppingRectanglePosition(){
+    _state.resetCroppingRectanglePosition = !_state.resetCroppingRectanglePosition;
   }
   
 }

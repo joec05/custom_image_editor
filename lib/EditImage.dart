@@ -70,6 +70,12 @@ class ImageEditorState extends State<EditImageComponentState> {
       inputsNotEmpty.value = addTextController.text.isNotEmpty;
     });
   }
+  
+  double limitCroppedSize = 50;
+  double linesWidth = 2;
+  double linesHeight = 2;
+  double ballSize = 20;
+  Color lineColor = Colors.grey;
 
   Widget cropRectangleComponent(child, EditImageProvider editImageProvider){
     double degrees = radiansToDegrees(editImageProvider.state.rotationAngle);
@@ -90,158 +96,191 @@ class ImageEditorState extends State<EditImageComponentState> {
             child: child,
           ),
         ),
-        // top left
+        
         Positioned(
-          top: getTop(draggedTop.value) - ballDiameter / 2,
-          left: getLeft(draggedLeft.value) - ballDiameter / 2,
-          child: ManipulatingBall(
-            onDrag: (dx, dy) {
-              var mid = (dx + dy) / 2;
-              var newHeight =draggedHeight.value - 2 * mid;
-              var newWidth =draggedWidth.value - 2 * mid;
-              draggedHeight.value = getTop(newHeight > 0 ? newHeight : 0);
-              draggedWidth.value = getLeft(newWidth > 0 ? newWidth : 0);
-              if(draggedTop.value + mid + draggedHeight.value <= totalHeight){
-                draggedTop.value = getTop(draggedTop.value + mid);
-              }
-              if(draggedLeft.value + mid + draggedWidth.value <= totalWidth){
-                draggedLeft.value = getLeft(draggedLeft.value + mid);
-              }
-            },
-            height: draggedHeight.value
-          ),
+          top: 0, left: 0,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.5)
+            ),
+            width: draggedLeft.value,
+            height: draggedTop.value,
+          )
         ),
-        // top middle
         Positioned(
-          top: getTop(draggedTop.value) - ballDiameter / 2,
-          left: (getLeft(draggedLeft.value) + getLeft(draggedLeft.value +draggedWidth.value)) / 2 - ballDiameter / 2,
-          child: ManipulatingBall(
-            onDrag: (dx, dy) {
-              var newHeight =draggedHeight.value - dy;
-              draggedHeight.value = getTop(newHeight > 0 ? newHeight : 0);
-              if(draggedTop.value + dy +draggedHeight.value <= totalHeight){
-                draggedTop.value = getTop(draggedTop.value + dy);
-              }
-            },
-            height: draggedHeight.value
-          ),
+          top: draggedTop.value, left: 0,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.5)
+            ),
+            width: draggedLeft.value,
+            height: draggedHeight.value,
+          )
         ),
-        // top right
         Positioned(
-          top: getTop(draggedTop.value) - ballDiameter / 2,
-          left: getLeft(draggedLeft.value +draggedWidth.value) - ballDiameter / 2,
-          child: ManipulatingBall(
-            onDrag: (dx, dy) {
-              var mid = (dx + (dy * -1)) / 2;
-              var newHeight =draggedHeight.value + 2 * mid;
-              var newWidth =draggedWidth.value + 2 * mid;
-              draggedHeight.value = getTop(newHeight +draggedTop.value > totalHeight ?draggedHeight.value : newHeight > 0 ? newHeight : 0);
-              draggedWidth.value = getLeft(newWidth +draggedLeft.value > totalWidth ?draggedWidth.value : newWidth > 0 ? newWidth : 0);
-              if(draggedTop.value - mid +draggedHeight.value <= totalHeight){
-                draggedTop.value = getTop(draggedTop.value - mid);
-              }
-              if(draggedLeft.value - mid +draggedWidth.value <= totalWidth){
-                draggedLeft.value = getLeft(draggedLeft.value - mid);
-              }
-            },
-            height: draggedHeight.value
-          ),
+          top: draggedTop.value + draggedHeight.value, left: 0,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.5)
+            ),
+            width: max(0, (draggedLeft.value)),
+            height: max(0, totalHeight - (draggedTop.value) - draggedHeight.value),
+          )
         ),
-        // center right
         Positioned(
-          top: (getTop(draggedTop.value +draggedHeight.value) + getTop(draggedTop.value)) / 2 - ballDiameter / 2,
-          left: getLeft(draggedLeft.value +draggedWidth.value) - ballDiameter / 2,
-          child: ManipulatingBall(
-            onDrag: (dx, dy) {
-              var newWidth =draggedWidth.value + dx;
-              draggedWidth.value = getLeft(newWidth +draggedLeft.value > totalWidth ?draggedWidth.value : newWidth > 0 ? newWidth : 0);
-            },
-            height: draggedHeight.value
-          ),
-          
+          top: 0, left: draggedLeft.value,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.5)
+            ),
+            width: draggedWidth.value,
+            height: draggedTop.value,
+          )
         ),
-        // bottom right
         Positioned(
-          top: getTop(draggedTop.value +draggedHeight.value) - ballDiameter / 2,
-          left: getLeft(draggedLeft.value +draggedWidth.value) - ballDiameter / 2,
-          child: ManipulatingBall(
-            onDrag: (dx, dy) {
-              var mid = (dx + dy) / 2;
-              var newHeight =draggedHeight.value + 2 * mid;
-              var newWidth =draggedWidth.value + 2 * mid;
-              draggedHeight.value = getTop(newHeight +draggedTop.value > totalHeight ?draggedHeight.value : newHeight > 0 ? newHeight : 0);
-              draggedWidth.value = getLeft(newWidth +draggedLeft.value > totalWidth ?draggedWidth.value : newWidth > 0 ? newWidth : 0);
-              if(draggedTop.value - mid +draggedHeight.value <= totalHeight){
-                draggedTop.value = getTop(draggedTop.value - mid);
-              }
-              if(draggedLeft.value - mid +draggedWidth.value <= totalWidth){
-                draggedLeft.value = getLeft(draggedLeft.value - mid);
-              }
-            },
-            height: draggedHeight.value
-          ),
+          top: draggedTop.value + draggedHeight.value, left: draggedLeft.value,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.5)
+            ),
+            width: max(0, draggedWidth.value),
+            height: max(0, totalHeight - (draggedTop.value) - draggedHeight.value),
+          )
         ),
-        // bottom center
         Positioned(
-          top: getTop(draggedTop.value +draggedHeight.value) - ballDiameter / 2,
-          left: (getLeft(draggedLeft.value) + getLeft(draggedLeft.value +draggedWidth.value)) / 2 - ballDiameter / 2,
-          child: ManipulatingBall(
-            onDrag: (dx, dy) {
-              var newHeight =draggedHeight.value + dy;
-              draggedHeight.value = getTop(newHeight +draggedTop.value > totalHeight ?draggedHeight.value : newHeight > 0 ? newHeight : 0);
-            },
-            height: draggedHeight.value
-          ),
+          top: 0, left: draggedLeft.value + draggedWidth.value,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.5)
+            ),
+            width: max(0, totalWidth - (draggedLeft.value) - draggedWidth.value),
+            height: max(0, draggedTop.value),
+          )
         ),
-        // bottom left
         Positioned(
-          top: getTop(draggedTop.value +draggedHeight.value) - ballDiameter / 2,
-          left: getLeft(draggedLeft.value) - ballDiameter / 2,
-          child: ManipulatingBall(
-            onDrag: (dx, dy) {
-              var mid = ((dx * -1) + dy) / 2;
-              var newHeight =draggedHeight.value + 2 * mid;
-              var newWidth =draggedWidth.value + 2 * mid;
-              draggedHeight.value = getTop(newHeight +draggedTop.value > totalHeight ?draggedHeight.value : newHeight > 0 ? newHeight : 0);
-              draggedWidth.value = getLeft(newWidth +draggedLeft.value > totalWidth ?draggedWidth.value : newWidth > 0 ? newWidth : 0);
-              if(draggedTop.value - mid +draggedHeight.value <= totalHeight){
-                draggedTop.value = getTop(draggedTop.value - mid);
-              }
-              if(draggedLeft.value - mid +draggedWidth.value <= totalWidth){
-                draggedLeft.value = getLeft(draggedLeft.value - mid);
-              }
-            },
-            height: draggedHeight.value
-          ),
+          top: draggedTop.value, left: draggedLeft.value + draggedWidth.value,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.5)
+            ),
+            width: max(0, totalWidth - (draggedLeft.value) - draggedWidth.value),
+            height: max(0, draggedHeight.value)
+          )
         ),
-        //left center
         Positioned(
-          top: (getTop(draggedTop.value +draggedHeight.value) + getTop(draggedTop.value)) / 2 - ballDiameter / 2,
-          left: getLeft(draggedLeft.value) - ballDiameter / 2,
-          child: ManipulatingBall(
-            onDrag: (dx, dy) {
-              var newWidth =draggedWidth.value - dx;
-              draggedWidth.value = getLeft(newWidth +draggedLeft.value > totalWidth ?draggedWidth.value : newWidth > 0 ? newWidth : 0);
-              draggedLeft.value = getLeft(draggedLeft.value + dx);
-            },
-            height: draggedHeight.value
-          ),
+          top: draggedTop.value + draggedHeight.value, left: draggedLeft.value + draggedWidth.value,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.5)
+            ),
+            width: max(0, totalWidth - (draggedLeft.value) - draggedWidth.value),
+            height: max(0, totalHeight - (draggedTop.value) - draggedHeight.value),
+          )
         ),
-        //center center
         Positioned(
-          top: (getTop(draggedTop.value +draggedHeight.value) + getTop(draggedTop.value)) / 2 - ballDiameter / 2,
-          left: (getLeft(draggedLeft.value) + getLeft(draggedLeft.value +draggedWidth.value)) / 2 - ballDiameter / 2,
-          child: ManipulatingBall(
-            onDrag: (dx, dy) {
-              if(draggedTop.value + dy +draggedHeight.value <= totalHeight){
-                draggedTop.value = getTop(draggedTop.value + dy);
-              }
-              if(draggedLeft.value+ dx +draggedWidth.value <= totalWidth){
-                draggedLeft.value = getLeft(draggedLeft.value + dx);
-              }
-            },
-            height: draggedHeight.value
+          left: draggedLeft.value,
+          top: draggedTop.value,
+          right: imageWidth.value - draggedWidth.value - draggedLeft.value,
+          bottom: imageHeight.value - draggedHeight.value - draggedTop.value,
+          child: Container(
+            width: draggedWidth.value,
+            height: draggedHeight.value,
+          )
           ),
+        Positioned(
+          left: draggedLeft.value - (ballSize-linesWidth)/2,
+          top: draggedTop.value + draggedHeight.value/2 - (ballSize-linesHeight)/2 ,
+          child: GestureDetector(
+            onPanUpdate: (details){
+              setState((){
+                  
+                draggedLeft.value += details.delta.dx;
+                draggedWidth.value -= details.delta.dx;
+                draggedLeft.value = max(0, min(draggedLeft.value, totalWidth - limitCroppedSize));
+                draggedWidth.value = max(limitCroppedSize, min(draggedWidth.value, totalWidth));
+                print(draggedLeft.value);
+              });
+            },
+            child: Container(
+              width: ballSize,
+              height: ballSize,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                shape: BoxShape.circle
+              ),
+            )
+          )
+        ),
+        Positioned(
+          left: draggedLeft.value + draggedWidth.value/2 - (ballSize-linesWidth)/2,
+          top: draggedTop.value - (ballSize-linesHeight)/2,
+            child: GestureDetector(
+              onPanUpdate: (details){
+                setState((){
+                  draggedTop.value += details.delta.dy;
+                  draggedHeight.value -= details.delta.dy;
+                  draggedTop.value = max(0, min(draggedTop.value, totalHeight - limitCroppedSize));
+                  draggedHeight.value = max(limitCroppedSize, min(draggedHeight.value, totalHeight));
+                  
+                });
+                
+              },
+              child: Container(
+                width: ballSize,
+                height: ballSize,
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  shape: BoxShape.circle
+                ),
+              )
+            )
+          ),    
+        Positioned(
+          left: draggedLeft.value + draggedWidth.value - (ballSize-linesWidth)/2 - linesWidth,
+          top: draggedTop.value + draggedHeight.value/2 - (ballSize-linesHeight)/2 ,
+          child: GestureDetector(
+            onPanUpdate: (details) {
+              setState(() {
+                if(draggedWidth.value + details.delta.dx + draggedLeft.value <= totalWidth){
+                  
+                  draggedWidth.value += details.delta.dx;
+                  draggedWidth.value = max(limitCroppedSize, min(draggedWidth.value, totalWidth));
+                  print(draggedLeft.value);
+                }
+              });
+            },
+            child: Container(
+              width: ballSize,
+              height: ballSize,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                shape: BoxShape.circle
+              ),
+            )
+          )
+        ),
+        Positioned(
+          left: draggedLeft.value + draggedWidth.value/2 - (ballSize-linesWidth)/2,
+          top: draggedTop.value + draggedHeight.value - (ballSize-linesHeight)/2 - linesHeight,
+          child: GestureDetector(
+            onPanUpdate: (details) {
+              setState(() {
+                if(draggedHeight.value + details.delta.dy + draggedTop.value <= totalHeight){
+                  
+                  draggedHeight.value += details.delta.dy;
+                  draggedHeight.value = max(draggedHeight.value, limitCroppedSize);
+                }
+              });
+            },
+            child: Container(
+              width: ballSize,
+              height: ballSize,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                shape: BoxShape.circle
+              ),
+            )
+          )
         ),
       ],
     );
@@ -490,18 +529,17 @@ class ImageEditorState extends State<EditImageComponentState> {
                   }
                 });
                 EditType selectedEditType = editImageProvider.state.selectedEditType;
-                if(selectedEditType == EditType.crop && prevAngle != degrees){
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    draggedWidth.value = degrees == 0 || degrees == 180 ? editImageProvider.state.width : editImageProvider.state.height;
-                    draggedHeight.value = degrees == 0 || degrees == 180 ? editImageProvider.state.height : editImageProvider.state.width;
-                    prevAngle = degrees;
-                  });
-                }else if(selectedEditType != EditType.crop){
+                if(selectedEditType != EditType.crop){
                   draggedTop.value = 0;
                   draggedLeft.value = 0;
                   draggedWidth.value = 0;
                   draggedHeight.value = 0;
                   prevAngle = -1;
+                }
+                if(editImageProvider.state.resetCroppingRectanglePosition){
+                  draggedLeft.value = 0;
+                  draggedTop.value = 0;
+                  editImageProvider.toggleCroppingRectanglePosition();
                 }
                 return Scaffold(
                   resizeToAvoidBottomInset: false,
@@ -537,8 +575,6 @@ class ImageEditorState extends State<EditImageComponentState> {
                                 'left':draggedLeft.value.toDouble()
                               });
                               editImageProvider.togglePaintState(true);
-                              draggedLeft.value = 0;
-                              draggedTop.value = 0;
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.red,
@@ -752,6 +788,11 @@ class ImageEditorState extends State<EditImageComponentState> {
                                         onTap: () {
                                           editImageProvider.updateSelectedEditType(EditType.crop);
                                           iconsListHeight.value = 0.1 * getScreenHeight();
+                                          if(prevAngle != degrees){
+                                            draggedWidth.value = degrees == 0 || degrees == 180 ? editImageProvider.state.width : editImageProvider.state.height;
+                                            draggedHeight.value = degrees == 0 || degrees == 180 ? editImageProvider.state.height : editImageProvider.state.width;
+                                            prevAngle = degrees;
+                                          }
                                         },
                                         child: const Icon(
                                           Icons.crop,
@@ -940,6 +981,7 @@ class ImagePainter extends CustomPainter {
         }  
         WidgetsBinding.instance.addPostFrameCallback((_) {
           editImageProvider.updateToCrop({});
+          editImageProvider.toggleCroppingRectanglePosition();
         });
       }
 
