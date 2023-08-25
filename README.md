@@ -15,8 +15,7 @@ Strong image editor based on Flutter with ability to crop, paint, add text, and 
 ## Custom image editor in display  
 
 ### Crop
-
-![](https://github.com/joec05/files/blob/main/custom_image_editor/crop.gif?raw=true)
+![](https://github.com/joec05/files/blob/aec89a406e8a7ddaf79f7f79e738d9a203a3e276/custom_image_editor/crop.gif?raw=true)
 
 <br />
 

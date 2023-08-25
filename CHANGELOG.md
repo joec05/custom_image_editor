@@ -9,3 +9,7 @@ Update license
 ## 1.0.2
 
 Fix overflow error and AppBar height
+
+## 1.0.3
+
+Rebuild design of cropping rectangle
