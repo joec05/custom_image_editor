@@ -13,3 +13,7 @@ Fix overflow error and AppBar height
 ## 1.0.3
 
 Rebuild design of cropping rectangle
+
+## 1.0.4
+
+Update latest dependencies
