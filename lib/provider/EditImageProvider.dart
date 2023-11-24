@@ -52,7 +52,7 @@ class EditImageProvider with ChangeNotifier {
     _state = EditImageProviderState(
       rotationAngle: 0.0, width: 0.0, height: 0.0, top: 0.0, 
       left: 0.0, points: [], toCrop: {}, selectedEditType: EditType.none, 
-      totalImageSize: Size(0, 0), drawingsList: [], selectedAddTextColor: Colors.black, selectedPaintColor: Colors.black,
+      totalImageSize: const Size(0, 0), drawingsList: [], selectedAddTextColor: Colors.black, selectedPaintColor: Colors.black,
       updatePaintState: false, resetCroppingRectanglePosition: false
     );
   }

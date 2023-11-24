@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
+
 import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
@@ -182,7 +184,7 @@ class ImageEditorState extends State<EditImageComponentState> {
           top: draggedTop.value,
           right: imageWidth.value - draggedWidth.value - draggedLeft.value,
           bottom: imageHeight.value - draggedHeight.value - draggedTop.value,
-          child: Container(
+          child: SizedBox(
             width: draggedWidth.value,
             height: draggedHeight.value,
           )
@@ -193,18 +195,16 @@ class ImageEditorState extends State<EditImageComponentState> {
           child: GestureDetector(
             onPanUpdate: (details){
               setState((){
-                  
                 draggedLeft.value += details.delta.dx;
                 draggedWidth.value -= details.delta.dx;
                 draggedLeft.value = max(0, min(draggedLeft.value, totalWidth - limitCroppedSize));
                 draggedWidth.value = max(limitCroppedSize, min(draggedWidth.value, totalWidth));
-                print(draggedLeft.value);
               });
             },
             child: Container(
               width: ballSize,
               height: ballSize,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.blue,
                 shape: BoxShape.circle
               ),
@@ -228,7 +228,7 @@ class ImageEditorState extends State<EditImageComponentState> {
               child: Container(
                 width: ballSize,
                 height: ballSize,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.blue,
                   shape: BoxShape.circle
                 ),
@@ -242,17 +242,15 @@ class ImageEditorState extends State<EditImageComponentState> {
             onPanUpdate: (details) {
               setState(() {
                 if(draggedWidth.value + details.delta.dx + draggedLeft.value <= totalWidth){
-                  
                   draggedWidth.value += details.delta.dx;
                   draggedWidth.value = max(limitCroppedSize, min(draggedWidth.value, totalWidth));
-                  print(draggedLeft.value);
                 }
               });
             },
             child: Container(
               width: ballSize,
               height: ballSize,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.blue,
                 shape: BoxShape.circle
               ),
@@ -275,7 +273,7 @@ class ImageEditorState extends State<EditImageComponentState> {
             child: Container(
               width: ballSize,
               height: ballSize,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.blue,
                 shape: BoxShape.circle
               ),
@@ -369,7 +367,6 @@ class ImageEditorState extends State<EditImageComponentState> {
                   valueListenable: inputsNotEmpty,
                   builder: (BuildContext context, bool inputsNotEmpty, Widget? child) {
                     return ElevatedButton(
-                      child: const Text('Generate'),
                       onPressed: inputsNotEmpty ? () {
                         currentText.value = addTextController.text;
                         addTextController.text = '';
@@ -384,6 +381,7 @@ class ImageEditorState extends State<EditImageComponentState> {
                         }
                         Navigator.of(context).pop();
                       } : null,
+                      child: const Text('Generate'),
                     );
                   }
                 )
@@ -395,15 +393,14 @@ class ImageEditorState extends State<EditImageComponentState> {
     );
   }
 
-  Widget AddTextComponent(child, EditImageProvider editImageProvider){
+  Widget addTextComponent(child, EditImageProvider editImageProvider){
     double containerWidth = editImageProvider.state.width;
     double containerHeight = editImageProvider.state.height;
     Offset offsetChange = applyDragTextRotationTransformation(currentTextOffset.value, editImageProvider);
-
     return Stack(
       children: [
         Positioned(
-          child: Container(
+          child: SizedBox(
             width: containerWidth,
             height: containerHeight,
             child: child
@@ -413,10 +410,6 @@ class ImageEditorState extends State<EditImageComponentState> {
           left: offsetChange.dx,
           top: offsetChange.dy,
           child: Draggable(
-            child: Text(
-              currentText.value,
-              style: generateAddTextStyle(16, editImageProvider.state.selectedAddTextColor, boldCurrentText.value),
-            ),
             feedback: Material(
               color: Colors.transparent,
               child: Text(
@@ -436,6 +429,10 @@ class ImageEditorState extends State<EditImageComponentState> {
               Offset localPosition = renderBox.globalToLocal(position);
               currentTextOffset.value = Offset(localPosition.dx - (getScreenWidth() - containerWidth) / 2, localPosition.dy - appBarHeight - (getScreenHeight() - containerHeight - appBarHeight - iconsListHeight.value) / 2);
             },
+            child: Text(
+              currentText.value,
+              style: generateAddTextStyle(16, editImageProvider.state.selectedAddTextColor, boldCurrentText.value),
+            ),
           ),
         ),
       ],
@@ -550,8 +547,8 @@ class ImageEditorState extends State<EditImageComponentState> {
                         Navigator.pop(context);
                       },
                     ),
-                    title: Row(
-                      children: const [
+                    title: const Row(
+                      children: [
                         Text(
                           'Image Editor',
                           style: TextStyle(
@@ -563,7 +560,7 @@ class ImageEditorState extends State<EditImageComponentState> {
                     ),
                     actions: [
                       selectedEditType == EditType.crop ?
-                        Container(
+                        SizedBox(
                           width: 0.2 * getScreenWidth(),
                           child: ElevatedButton(
                             onPressed: (){
@@ -628,7 +625,7 @@ class ImageEditorState extends State<EditImageComponentState> {
                         valueListenable: currentText,
                         builder: (BuildContext context, String text, Widget? child) {
                           return text.isEmpty ?
-                            Container(
+                            SizedBox(
                               width: 0.2 * getScreenWidth(),
                               child: ElevatedButton(
                                 onPressed: () {
@@ -636,14 +633,14 @@ class ImageEditorState extends State<EditImageComponentState> {
                                   iconsListHeight.value = 0.1 * getScreenHeight();
                                   createImagePng(context, editImageProvider);
                                 },
-                                child: const Text('Save'),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.lightGreen,
                                   shape: RoundedRectangleBorder(
                                     side: BorderSide.none,
                                     borderRadius: BorderRadius.circular(0),
                                   ),
-                                )
+                                ),
+                                child: const Text('Save')
                               )
                             )
                           : Container();
@@ -657,13 +654,13 @@ class ImageEditorState extends State<EditImageComponentState> {
                       Flexible(
                         child: Column(
                           children: [
-                            Container(
+                            SizedBox(
                               height: getScreenHeight() - appBarHeight - iconsListHeight.value,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Container(
+                                  SizedBox(
                                     width: degrees == 0 || degrees == 180 ? editImageProvider.state.width : editImageProvider.state.height,
                                     height: degrees == 0 || degrees == 180 ? editImageProvider.state.height : editImageProvider.state.width,
                                     child: RepaintBoundary(
@@ -705,7 +702,7 @@ class ImageEditorState extends State<EditImageComponentState> {
                                           return ValueListenableBuilder<String>(
                                             valueListenable: currentText,
                                             builder: (BuildContext context, String currentText, Widget? child) {
-                                              return AddTextComponent(
+                                              return addTextComponent(
                                                 generateCanvas(snapshot.data, editImageProvider, context),
                                                 editImageProvider
                                               );
