@@ -17,3 +17,7 @@ Rebuild design of cropping rectangle
 ## 1.0.4
 
 Update latest dependencies
+
+## 1.0.5
+
+Maintenance
